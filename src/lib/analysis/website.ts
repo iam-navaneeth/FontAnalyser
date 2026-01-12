@@ -96,11 +96,16 @@ export async function analyzeWebsite(url: string): Promise<WebsiteAnalysisResult
             }
 
             // Walk the DOM
+            // Walk the DOM - Limit to avoid timeout on large pages
             const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT);
             let currentNode = walker.currentNode;
-            while (currentNode) {
+            let count = 0;
+            const MAX_NODES = 2000; // Cap at 2000 nodes for performance on Vercel
+
+            while (currentNode && count < MAX_NODES) {
                 processElement(currentNode as Element);
                 currentNode = walker.nextNode() as Node;
+                count++;
             }
 
             // Sort fonts by importance (Headings > Body) and limit
