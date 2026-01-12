@@ -3,8 +3,25 @@ import chromium from "@sparticuz/chromium-min";
 import puppeteerCore from "puppeteer-core";
 import puppeteer from "puppeteer";
 
+export interface TypographyStyle {
+    element: string;
+    fontFamily: string;
+    fontWeight: string;
+    fontSize: string;
+    lineHeight: string;
+    letterSpacing: string;
+    textTransform: string;
+    color: string;
+    backgroundColor: string;
+}
+
+export interface WebsiteAnalysisResult {
+    typography: TypographyStyle[];
+    colors: string[];
+}
+
 export async function analyzeWebsite(url: string): Promise<WebsiteAnalysisResult> {
-    let browser;
+    let browser: any;
     const isProduction = process.env.NODE_ENV === 'production';
 
     if (isProduction) {
